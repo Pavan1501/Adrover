@@ -73,9 +73,22 @@
       .marquee-track {
         display: flex;
         width: 200%;
-        animation: marquee 30s linear infinite;
+        animation: marquee 32s linear infinite;
       }
       .marquee-track:hover {
+        animation-play-state: paused;
+      }
+
+      @keyframes marqueeReverse {
+        0% { transform: translateX(-50%); }
+        100% { transform: translateX(0%); }
+      }
+      .marquee-track-reverse {
+        display: flex;
+        width: 200%;
+        animation: marqueeReverse 36s linear infinite;
+      }
+      .marquee-track-reverse:hover {
         animation-play-state: paused;
       }
 
@@ -143,7 +156,7 @@
         content: '';
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-DsRSRBU9.js"></script>
+    <script type="module" crossorigin src="./assets/index-7XYgjN8M.js"></script>
   </head>
   <body>
     <div id="root"></div>
