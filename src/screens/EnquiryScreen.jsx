@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Tv,
   Zap,
+  Compass,
 } from 'lucide-react';
 
 export default function EnquiryScreen({ onBackToHome }) {
@@ -171,11 +172,24 @@ export default function EnquiryScreen({ onBackToHome }) {
 
       <View style={styles.mainContainer}>
         {isSubmitted ? (
-          /* SUCCESS CONFIRMATION VIEW */
+          /* SUCCESS CONFIRMATION VIEW WITH CELEBRATORY CARD */
           <View style={styles.successCard}>
-            <View style={styles.successIconBubble}>
-              <CheckCircle2 size={44} color="#059669" />
-            </View>
+            <div
+              style={{
+                position: 'relative',
+                width: 90,
+                height: 90,
+                marginBottom: 20,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <div className="radar-ping" />
+              <div style={styles.successIconBubble}>
+                <CheckCircle2 size={44} color="#059669" />
+              </div>
+            </div>
 
             <Text style={styles.successHeading}>Campaign Enquiry Submitted!</Text>
             <Text style={styles.successSubtext}>
@@ -330,8 +344,9 @@ export default function EnquiryScreen({ onBackToHome }) {
                               padding: '16px',
                               borderRadius: '14px',
                               cursor: 'pointer',
-                              transition: 'all 0.2s ease',
-                              boxShadow: isSelected ? '0 4px 14px rgba(16, 185, 129, 0.15)' : 'none',
+                              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                              transform: isSelected ? 'scale(1.02)' : 'scale(1)',
+                              boxShadow: isSelected ? '0 6px 18px rgba(16, 185, 129, 0.18)' : 'none',
                             }}
                           >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
@@ -370,6 +385,8 @@ export default function EnquiryScreen({ onBackToHome }) {
                                 padding: '14px',
                                 borderRadius: '12px',
                                 cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                transform: isSel ? 'scale(1.02)' : 'scale(1)',
                               }}
                             >
                               <div style={{ fontSize: '14px', fontWeight: 800, color: isSel ? '#854D0E' : '#0F172A' }}>
@@ -403,6 +420,7 @@ export default function EnquiryScreen({ onBackToHome }) {
                                 fontWeight: 800,
                                 fontSize: '13px',
                                 color: isSel ? '#065F46' : '#334155',
+                                transition: 'all 0.2s ease',
                               }}
                             >
                               {dur.label}
@@ -432,6 +450,7 @@ export default function EnquiryScreen({ onBackToHome }) {
                               backgroundColor: checked ? '#F0FDF4' : '#F8FAFC',
                               border: checked ? '1.5px solid #10B981' : '1px solid #E2E8F0',
                               cursor: 'pointer',
+                              transition: 'all 0.15s ease',
                             }}
                           >
                             <input
@@ -465,6 +484,7 @@ export default function EnquiryScreen({ onBackToHome }) {
                         backgroundColor: '#F8FAFC',
                         cursor: 'pointer',
                         position: 'relative',
+                        transition: 'border-color 0.2s ease',
                       }}
                     >
                       <input
@@ -493,7 +513,7 @@ export default function EnquiryScreen({ onBackToHome }) {
                     </div>
                   </div>
 
-                  {/* Submit Button */}
+                  {/* Submit Button with High-Impact Bounce */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -511,7 +531,7 @@ export default function EnquiryScreen({ onBackToHome }) {
                       justifyContent: 'center',
                       gap: '12px',
                       boxShadow: '0 8px 24px rgba(234, 179, 8, 0.45)',
-                      transition: 'all 0.2s ease',
+                      transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
                     <span>{isSubmitting ? 'Verifying Routes & Reserving...' : 'Submit Campaign Enquiry & Request Slots'}</span>
@@ -524,8 +544,9 @@ export default function EnquiryScreen({ onBackToHome }) {
             {/* Right Column: Live Campaign Estimator & Simulated Brand Preview */}
             <div style={{ flex: '1 1 360px', minWidth: '300px' }}>
               <div style={sidebarCardStyle}>
-                {/* Live Brand Van Mockup Card */}
+                {/* Live Brand Van Mockup Card with Suspension Vibration */}
                 <div
+                  className="truck-rumble"
                   style={{
                     backgroundColor: '#0F172A',
                     borderRadius: '16px',
@@ -544,7 +565,12 @@ export default function EnquiryScreen({ onBackToHome }) {
                     </span>
                   </div>
 
-                  <div style={{ textAlign: 'center', padding: '14px 6px', backgroundColor: '#064E3B', borderRadius: '10px', border: '1px solid #10B981' }}>
+                  <div
+                    className="laser-scan-line"
+                    style={{ height: '2px' }}
+                  />
+
+                  <div style={{ textAlign: 'center', padding: '16px 8px', backgroundColor: '#064E3B', borderRadius: '10px', border: '1px solid #10B981' }}>
                     <div style={{ fontSize: '18px', fontWeight: 900, color: '#FACC15', letterSpacing: '1px' }}>
                       {formData.companyName ? formData.companyName.toUpperCase() : 'YOUR BRAND HERE'}
                     </div>
@@ -552,6 +578,15 @@ export default function EnquiryScreen({ onBackToHome }) {
                       {formData.dailyPlays} • 100% P3 4K LED
                     </div>
                   </div>
+
+                  {/* Animated Road Beneath Preview Truck */}
+                  <div
+                    className="animated-road"
+                    style={{
+                      height: '14px',
+                      marginTop: '8px',
+                    }}
+                  />
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
@@ -819,7 +854,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 2,
     borderColor: '#A7F3D0',
-    marginBottom: 20,
   },
   successHeading: {
     fontSize: 28,

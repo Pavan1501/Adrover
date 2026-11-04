@@ -19,6 +19,7 @@ import {
   Gauge,
   Sliders,
   Flame,
+  BellRing,
 } from 'lucide-react';
 
 export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchDemo }) {
@@ -26,14 +27,15 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
   const [customBrandName, setCustomBrandName] = useState('YOUR BRAND HERE');
   const [customTagline, setCustomTagline] = useState('OWN CITY STREETS TODAY');
   const [selectedPresetIndex, setSelectedPresetIndex] = useState(0);
-  const [speed, setSpeed] = useState(26);
+  const [speed, setSpeed] = useState(28);
+  const [isHonking, setIsHonking] = useState(false);
 
   // Live play counter ticking simulation
   useEffect(() => {
     const timer = setInterval(() => {
       setLivePlayCount((prev) => (prev >= 10000 ? 8400 : prev + 1));
-      setSpeed(Math.floor(22 + Math.random() * 8));
-    }, 2400);
+      setSpeed(Math.floor(24 + Math.random() * 8));
+    }, 2200);
     return () => clearInterval(timer);
   }, []);
 
@@ -50,22 +52,34 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
     setCustomTagline(campaignPresets[idx].tagline);
   };
 
-  // Subtle web audio beep for tactile feedback
-  const playTactileClick = () => {
+  // Fun interactive truck horn sound via Web Audio API
+  const playTruckHorn = () => {
+    setIsHonking(true);
+    setTimeout(() => setIsHonking(false), 500);
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 note
-      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-      osc.connect(gain);
+
+      osc1.type = 'sawtooth';
+      osc2.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(340, audioCtx.currentTime); // Dual tone truck horn
+      osc2.frequency.setValueAtTime(420, audioCtx.currentTime);
+
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+
+      osc1.connect(gain);
+      osc2.connect(gain);
       gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.1);
+
+      osc1.start();
+      osc2.start();
+      osc1.stop(audioCtx.currentTime + 0.45);
+      osc2.stop(audioCtx.currentTime + 0.45);
     } catch (e) {
-      // Ignore if audio context not allowed
+      // Audio context might be restricted before gesture
     }
   };
 
@@ -90,7 +104,7 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
             </View>
           </div>
 
-          {/* Main Headline */}
+          {/* Main Headline with High Visual Punch */}
           <Text style={styles.heroHeadline}>
             Turn High-Density City Roads into Your{' '}
             <Text style={styles.headlineHighlightGreen}>High-Converting</Text>{' '}
@@ -99,19 +113,16 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
 
           {/* Subtext */}
           <Text style={styles.heroSubtext}>
-            Adover brings brand videos to eye-level on bustling streets.
-            Our fleet of double-sided P3 Ultra-Bright LED display vans delivers verified
+            Adover brings brand videos directly to eye-level on bustling streets.
+            Our fleet of double-sided P3 Ultra-Bright LED vans delivers verified
             <Text style={styles.boldText}> 10,000+ daily screen plays</Text> across prime metropolitan hotspots.
           </Text>
 
-          {/* CTA Row */}
+          {/* CTA Row with Spring Micro-Interactions */}
           <View style={styles.ctaRow}>
             <TouchableOpacity
               style={styles.primaryCta}
-              onPress={() => {
-                playTactileClick();
-                onEnquireClick();
-              }}
+              onPress={onEnquireClick}
               activeOpacity={0.85}
             >
               <Text style={styles.primaryCtaText}>Start Campaign Enquiry</Text>
@@ -122,10 +133,7 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
 
             <TouchableOpacity
               style={styles.secondaryCta}
-              onPress={() => {
-                playTactileClick();
-                onWatchDemo();
-              }}
+              onPress={onWatchDemo}
               activeOpacity={0.85}
             >
               <View style={styles.playIconBox}>
@@ -133,32 +141,59 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
               </View>
               <Text style={styles.secondaryCtaText}>Watch Transit Reel</Text>
             </TouchableOpacity>
+
+            {/* Fun Truck Horn Button */}
+            <button
+              onClick={playTruckHorn}
+              style={{
+                backgroundColor: isHonking ? '#FACC15' : '#FFFFFF',
+                border: '2px solid #E2E8F0',
+                borderRadius: '24px',
+                padding: '12px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                cursor: 'pointer',
+                fontWeight: 800,
+                fontSize: '13px',
+                color: '#064E3B',
+                boxShadow: isHonking ? '0 0 20px rgba(250, 204, 21, 0.6)' : '0 2px 8px rgba(0,0,0,0.04)',
+                transform: isHonking ? 'scale(1.08)' : 'scale(1)',
+                transition: 'all 0.15s ease',
+              }}
+              title="Test realistic LED van horn sound"
+            >
+              <BellRing size={16} color={isHonking ? '#064E3B' : '#059669'} />
+              <span>{isHonking ? 'HONK! 🎺' : 'Honk Horn'}</span>
+            </button>
           </View>
 
           {/* Interactive "Try Your Brand Live On Screen" Mini Controller */}
           <div
             style={{
               backgroundColor: '#FFFFFF',
-              borderRadius: '16px',
+              borderRadius: '20px',
               border: '2px solid #E2E8F0',
-              padding: '16px 18px',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.04)',
-              marginTop: '4px',
+              padding: '18px 20px',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.04)',
+              marginTop: '8px',
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sliders size={15} color="#059669" />
-                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.3px' }}>
-                  TEST YOUR BRAND ON THE TRUCK SCREEN
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Sliders size={16} color="#059669" />
+                <span style={{ fontSize: '13px', fontWeight: 900, color: '#0F172A', letterSpacing: '0.4px' }}>
+                  TYPE YOUR BRAND ON THE MOVING SCREEN
                 </span>
               </div>
-              <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 700 }}>
+              <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 800, background: '#ECFDF5', padding: '3px 8px', borderRadius: '6px' }}>
                 ● Real-Time Simulator
               </span>
             </div>
 
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '12px' }}>
               <input
                 type="text"
                 placeholder="Type brand name..."
@@ -167,14 +202,15 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
                 style={{
                   flex: 1,
                   minWidth: '160px',
-                  padding: '8px 12px',
-                  borderRadius: '10px',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
                   border: '1.5px solid #CBD5E1',
                   fontSize: '13px',
-                  fontWeight: 800,
+                  fontWeight: 900,
                   color: '#064E3B',
                   backgroundColor: '#F8FAFC',
                   outline: 'none',
+                  transition: 'border-color 0.2s ease',
                 }}
               />
               <input
@@ -183,38 +219,37 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
                 value={customTagline}
                 onChange={(e) => setCustomTagline(e.target.value.toUpperCase())}
                 style={{
-                  flex: 1.2,
+                  flex: 1.3,
                   minWidth: '180px',
-                  padding: '8px 12px',
-                  borderRadius: '10px',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
                   border: '1.5px solid #CBD5E1',
                   fontSize: '13px',
                   color: '#334155',
                   backgroundColor: '#F8FAFC',
                   outline: 'none',
+                  transition: 'border-color 0.2s ease',
                 }}
               />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>Preset Brands:</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '12px', fontWeight: 800, color: '#64748B' }}>Preset Brands:</span>
               {campaignPresets.map((preset, idx) => (
                 <button
                   key={preset.brand}
-                  onClick={() => {
-                    playTactileClick();
-                    handleApplyPreset(idx);
-                  }}
+                  onClick={() => handleApplyPreset(idx)}
                   style={{
-                    backgroundColor: selectedPresetIndex === idx ? '#ECFDF5' : '#F1F5F9',
-                    border: selectedPresetIndex === idx ? '1px solid #10B981' : '1px solid #E2E8F0',
-                    color: selectedPresetIndex === idx ? '#065F46' : '#475569',
-                    padding: '4px 8px',
-                    borderRadius: '8px',
+                    backgroundColor: selectedPresetIndex === idx ? '#FACC15' : '#F1F5F9',
+                    border: selectedPresetIndex === idx ? '1.5px solid #EAB308' : '1px solid #E2E8F0',
+                    color: selectedPresetIndex === idx ? '#064E3B' : '#475569',
+                    padding: '5px 12px',
+                    borderRadius: '10px',
                     fontSize: '11px',
-                    fontWeight: 700,
+                    fontWeight: 800,
                     cursor: 'pointer',
-                    transition: 'all 0.15s ease',
+                    boxShadow: selectedPresetIndex === idx ? '0 2px 8px rgba(234, 179, 8, 0.3)' : 'none',
+                    transition: 'all 0.2s ease',
                   }}
                 >
                   {preset.brand.split(' ')[0]}
@@ -224,188 +259,255 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
           </div>
         </View>
 
-        {/* Right Column: 3D High-Tech LED Van Simulator */}
+        {/* Right Column: 3D High-Tech LED Van Simulator with Driving Physics */}
         <View style={styles.heroRight}>
-          <div className="glow-pulse" style={{ width: '100%', maxWidth: '580px' }}>
-            <View style={styles.ledVanCard}>
-              {/* Telemetry Bar */}
-              <View style={styles.vanTopBar}>
-                <View style={styles.vanStatusLeft}>
-                  <View style={styles.liveIndicator}>
-                    <Radio size={14} color="#10B981" />
-                    <Text style={styles.liveIndicatorText}>LIVE ON TRANSIT</Text>
-                  </View>
-                  <View style={styles.routeTag}>
-                    <MapPin size={12} color="#059669" />
-                    <Text style={styles.routeTagText}>Mumbai • BKC Arterial to Worli Sea Link</Text>
-                  </View>
-                </View>
-                <View style={styles.speedTag}>
-                  <Gauge size={12} color="#B45309" />
-                  <Text style={styles.speedTagText}>{speed} km/h</Text>
-                </View>
-              </View>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '580px' }}>
+            {/* Floating Live Badge 1 */}
+            <div
+              className="float-badge"
+              style={{
+                position: 'absolute',
+                top: '-18px',
+                left: '20px',
+                zIndex: 20,
+                background: '#FFFFFF',
+                border: '2px solid #10B981',
+                padding: '6px 14px',
+                borderRadius: '20px',
+                boxShadow: '0 8px 20px rgba(16, 185, 129, 0.25)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981' }} />
+              <span style={{ fontSize: '11px', fontWeight: 900, color: '#064E3B' }}>
+                LIVE GPS: BKC ARTERIAL
+              </span>
+            </div>
 
-              {/* High-Resolution Simulated Mobile LED Display Screen Frame */}
-              <View style={styles.ledScreenFrame}>
-                <View style={styles.ledScreenBorder}>
+            {/* Floating Live Badge 2 */}
+            <div
+              className="float-badge-delayed"
+              style={{
+                position: 'absolute',
+                top: '-18px',
+                right: '20px',
+                zIndex: 20,
+                background: '#FFFFFF',
+                border: '2px solid #FACC15',
+                padding: '6px 14px',
+                borderRadius: '20px',
+                boxShadow: '0 8px 20px rgba(250, 204, 21, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <Flame size={14} color="#D97706" />
+              <span style={{ fontSize: '11px', fontWeight: 900, color: '#854D0E' }}>
+                54,000+ COMMUTER EYES
+              </span>
+            </div>
+
+            {/* Main Truck Housing with Suspension Rumble Animation */}
+            <div className="truck-rumble glow-pulse" style={{ width: '100%' }}>
+              <View style={styles.ledVanCard}>
+                {/* Telemetry Bar */}
+                <View style={styles.vanTopBar}>
+                  <View style={styles.vanStatusLeft}>
+                    <View style={styles.liveIndicator}>
+                      <Radio size={14} color="#10B981" />
+                      <Text style={styles.liveIndicatorText}>LIVE ON TRANSIT</Text>
+                    </View>
+                    <View style={styles.routeTag}>
+                      <MapPin size={12} color="#059669" />
+                      <Text style={styles.routeTagText}>Mumbai • BKC to Worli Sea Link</Text>
+                    </View>
+                  </View>
+                  <View style={styles.speedTag}>
+                    <Gauge size={12} color="#B45309" />
+                    <Text style={styles.speedTagText}>{speed} km/h</Text>
+                  </View>
+                </View>
+
+                {/* High-Resolution Simulated Mobile LED Display Screen Frame */}
+                <View style={styles.ledScreenFrame}>
+                  <View style={styles.ledScreenBorder}>
+                    <div
+                      className="led-pixel-overlay"
+                      style={{
+                        backgroundColor: campaignPresets[selectedPresetIndex]?.bg || '#064E3B',
+                        padding: '24px 20px',
+                        minHeight: '220px',
+                        borderRadius: '14px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        boxShadow: 'inset 0 0 40px rgba(0,0,0,0.65)',
+                        transition: 'background-color 0.4s ease',
+                      }}
+                    >
+                      {/* Laser Scanline Beam Sweeping Across Screen */}
+                      <div className="laser-scan-line" />
+
+                      {/* Screen Header Bar */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 6,
+                            backgroundColor: 'rgba(255,255,255,0.2)',
+                            padding: '3px 8px',
+                            borderRadius: 8,
+                            backdropFilter: 'blur(4px)',
+                          }}
+                        >
+                          <Tv size={13} color="#FFFFFF" />
+                          <span style={{ fontSize: 10, fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.6px' }}>
+                            P3 ULTRA HD 6,500 NITS
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span style={{ fontSize: 11, fontWeight: 900, color: '#FACC15', letterSpacing: '1px' }}>
+                            ROTATION #12
+                          </span>
+                          <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981' }} />
+                        </div>
+                      </div>
+
+                      {/* Central Brand Content Broadcasted On The LED Van */}
+                      <div style={{ textAlign: 'center', margin: '14px 0' }}>
+                        <div
+                          style={{
+                            fontSize: '32px',
+                            fontWeight: 900,
+                            color: '#FACC15',
+                            letterSpacing: '1.5px',
+                            textShadow: '0 0 25px rgba(250, 204, 21, 0.8), 0 3px 8px rgba(0,0,0,0.9)',
+                            textTransform: 'uppercase',
+                            fontFamily: 'system-ui, sans-serif',
+                            wordBreak: 'break-word',
+                            transition: 'all 0.3s ease',
+                          }}
+                        >
+                          {customBrandName || 'YOUR BRAND'}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '15px',
+                            fontWeight: 800,
+                            color: '#FFFFFF',
+                            marginTop: '6px',
+                            textShadow: '0 2px 4px rgba(0,0,0,0.8)',
+                            letterSpacing: '0.5px',
+                          }}
+                        >
+                          {customTagline || 'UNSTOPPABLE ATTENTION'}
+                        </div>
+                      </div>
+
+                      {/* Bottom Screen Bar */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 6,
+                            backgroundColor: '#FACC15',
+                            padding: '4px 10px',
+                            borderRadius: 6,
+                          }}
+                        >
+                          <Zap size={13} color="#0F172A" />
+                          <span style={{ fontSize: 10, fontWeight: 900, color: '#0F172A', letterSpacing: '0.5px' }}>
+                            SCAN VEHICLE QR TO REDEEM
+                          </span>
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: '#A7F3D0' }}>
+                          120° Wide Viewing Angle
+                        </span>
+                      </div>
+                    </div>
+                  </View>
+
+                  {/* Truck Chassis with Rotating Wheels & Moving Asphalt Road */}
                   <div
-                    className="led-pixel-overlay"
+                    className="animated-road"
                     style={{
-                      backgroundColor: campaignPresets[selectedPresetIndex]?.bg || '#064E3B',
-                      padding: '24px 20px',
-                      minHeight: '220px',
-                      borderRadius: '12px',
+                      paddingTop: '12px',
+                      paddingBottom: '8px',
+                      paddingHorizontal: '12px',
                       display: 'flex',
-                      flexDirection: 'column',
+                      alignItems: 'center',
                       justifyContent: 'space-between',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      boxShadow: 'inset 0 0 40px rgba(0,0,0,0.6)',
-                      transition: 'background-color 0.4s ease',
                     }}
                   >
-                    {/* Screen Header Bar */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 6,
-                          backgroundColor: 'rgba(255,255,255,0.2)',
-                          padding: '3px 8px',
-                          borderRadius: 8,
-                          backdropFilter: 'blur(4px)',
-                        }}
-                      >
-                        <Tv size={13} color="#FFFFFF" />
-                        <span style={{ fontSize: 10, fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.6px' }}>
-                          P3 ULTRA HD 6,500 NITS
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span style={{ fontSize: 11, fontWeight: 800, color: '#FACC15', letterSpacing: '1px' }}>
-                          ROTATION #12
-                        </span>
-                        <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981' }} />
-                      </div>
+                    <View style={styles.chassisCabin}>
+                      <Text style={styles.cabinText}>ADOVER FLEET 01</Text>
+                    </View>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Compass size={13} color="#94A3B8" />
+                      <span style={{ fontSize: 10, color: '#64748B', fontWeight: 800 }}>GPS: 19.0760° N, 72.8777° E</span>
                     </div>
 
-                    {/* Central Brand Content Broadcasted On The LED Van */}
-                    <div style={{ textAlign: 'center', margin: '14px 0' }}>
-                      <div
-                        style={{
-                          fontSize: '30px',
-                          fontWeight: 900,
-                          color: '#FACC15',
-                          letterSpacing: '1.5px',
-                          textShadow: '0 0 20px rgba(250, 204, 21, 0.7), 0 3px 6px rgba(0,0,0,0.8)',
-                          textTransform: 'uppercase',
-                          fontFamily: 'system-ui, sans-serif',
-                          wordBreak: 'break-word',
-                        }}
-                      >
-                        {customBrandName || 'YOUR BRAND'}
+                    {/* Rotating Wheels */}
+                    <div style={{ display: 'flex', gap: '14px' }}>
+                      <div className="rotating-wheel" style={wheelStyle}>
+                        <div style={wheelHubStyle} />
                       </div>
-                      <div
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 800,
-                          color: '#FFFFFF',
-                          marginTop: '6px',
-                          textShadow: '0 2px 4px rgba(0,0,0,0.8)',
-                          letterSpacing: '0.5px',
-                        }}
-                      >
-                        {customTagline || 'UNSTOPPABLE ATTENTION'}
+                      <div className="rotating-wheel" style={wheelStyle}>
+                        <div style={wheelHubStyle} />
                       </div>
-                    </div>
-
-                    {/* Bottom Screen Bar */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 6,
-                          backgroundColor: '#FACC15',
-                          padding: '4px 10px',
-                          borderRadius: 6,
-                        }}
-                      >
-                        <Zap size={13} color="#0F172A" />
-                        <span style={{ fontSize: 10, fontWeight: 900, color: '#0F172A', letterSpacing: '0.5px' }}>
-                          SCAN VEHICLE QR TO REDEEM
-                        </span>
-                      </div>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: '#A7F3D0' }}>
-                        120° Wide Angle Viewing
-                      </span>
                     </div>
                   </div>
                 </View>
 
-                {/* Truck Chassis & Heavy Duty Mobile Van Frame */}
-                <View style={styles.truckChassis}>
-                  <View style={styles.chassisCabin}>
-                    <Text style={styles.cabinText}>ADOVER FLEET 01</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                    <Compass size={13} color="#94A3B8" />
-                    <Text style={{ fontSize: 10, color: '#94A3B8', fontWeight: '700' }}>GPS: 19.0760° N, 72.8777° E</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', gap: 12 }}>
-                    <View style={styles.wheelLeft}>
-                      <View style={styles.wheelHub} />
-                    </View>
-                    <View style={styles.wheelRight}>
-                      <View style={styles.wheelHub} />
+                {/* Bottom Metrics Bar */}
+                <View style={styles.vanFooterStats}>
+                  <View style={styles.vanStatCol}>
+                    <Text style={styles.statLabel}>Today's Verified Plays</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
+                      <Text style={styles.statValueGreen}>
+                        {livePlayCount.toLocaleString()}
+                      </Text>
+                      <Text style={styles.statSubText}>/ 10,000</Text>
                     </View>
                   </View>
+
+                  <View style={styles.dividerVertical} />
+
+                  <View style={styles.vanStatCol}>
+                    <Text style={styles.statLabel}>Live Street Footfall</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
+                      <Eye size={16} color="#059669" />
+                      <Text style={styles.statValueYellow}>54.2K+</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.dividerVertical} />
+
+                  <TouchableOpacity
+                    style={styles.simNextBtn}
+                    onPress={() => {
+                      const nextIdx = (selectedPresetIndex + 1) % campaignPresets.length;
+                      handleApplyPreset(nextIdx);
+                    }}
+                  >
+                    <Text style={styles.simNextBtnText}>Next Ad Reel ➔</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-
-              {/* Bottom Metrics Bar */}
-              <View style={styles.vanFooterStats}>
-                <View style={styles.vanStatCol}>
-                  <Text style={styles.statLabel}>Today's Verified Plays</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
-                    <Text style={styles.statValueGreen}>
-                      {livePlayCount.toLocaleString()}
-                    </Text>
-                    <Text style={styles.statSubText}>/ 10,000</Text>
-                  </View>
-                </View>
-
-                <View style={styles.dividerVertical} />
-
-                <View style={styles.vanStatCol}>
-                  <Text style={styles.statLabel}>Live Street Footfall</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
-                    <Eye size={16} color="#059669" />
-                    <Text style={styles.statValueYellow}>54.2K+</Text>
-                  </View>
-                </View>
-
-                <View style={styles.dividerVertical} />
-
-                <TouchableOpacity
-                  style={styles.simNextBtn}
-                  onPress={() => {
-                    playTactileClick();
-                    const nextIdx = (selectedPresetIndex + 1) % campaignPresets.length;
-                    handleApplyPreset(nextIdx);
-                  }}
-                >
-                  <Text style={styles.simNextBtnText}>Next Ad Reel</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            </div>
           </div>
         </View>
       </View>
 
-      {/* KPI Stats Strip */}
+      {/* KPI Stats Strip with Floating Hover Micro-Interactions */}
       <View style={styles.kpiContainer}>
         <View style={styles.kpiInner}>
           <View style={styles.kpiItem}>
@@ -458,6 +560,26 @@ export default function HeroSection({ onEnquireClick, onExploreProcess, onWatchD
     </View>
   );
 }
+
+const wheelStyle = {
+  width: '26px',
+  height: '26px',
+  borderRadius: '13px',
+  backgroundColor: '#0F172A',
+  border: '3px solid #64748B',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'relative',
+};
+
+const wheelHubStyle = {
+  width: '8px',
+  height: '8px',
+  borderRadius: '4px',
+  backgroundColor: '#FACC15',
+  border: '1px solid #0F172A',
+};
 
 const styles = StyleSheet.create({
   heroWrapper: {
@@ -558,7 +680,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: 16,
+    gap: 14,
     marginBottom: 22,
   },
   primaryCta: {
@@ -694,13 +816,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
   },
-  truckChassis: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 10,
-    paddingHorizontal: 12,
-  },
   chassisCabin: {
     backgroundColor: '#334155',
     paddingVertical: 4,
@@ -711,32 +826,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '800',
     color: '#CBD5E1',
-  },
-  wheelLeft: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: '#1E293B',
-    borderWidth: 3,
-    borderColor: '#64748B',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  wheelRight: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: '#1E293B',
-    borderWidth: 3,
-    borderColor: '#64748B',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  wheelHub: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#FACC15',
   },
   vanFooterStats: {
     flexDirection: 'row',

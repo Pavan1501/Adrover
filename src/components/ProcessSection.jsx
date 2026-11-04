@@ -25,6 +25,7 @@ import {
   FileCheck,
   Radio,
   Camera,
+  Activity,
 } from 'lucide-react';
 import { CAMPAIGN_STEPS } from '../data/mockData';
 
@@ -99,10 +100,13 @@ export default function ProcessSection({ onEnquireClick }) {
       <View style={styles.container}>
         {/* Section Header */}
         <View style={styles.headerBlock}>
-          <View style={styles.sectionBadge}>
-            <Layers size={14} color="#065F46" />
-            <Text style={styles.sectionBadgeText}>HOW ADOVER WORKS</Text>
-          </View>
+          <div className="shimmer-badge" style={{ alignSelf: 'center', marginBottom: '14px' }}>
+            <View style={styles.sectionBadge}>
+              <Layers size={14} color="#065F46" />
+              <Text style={styles.sectionBadgeText}>HOW ADOVER WORKS</Text>
+            </View>
+          </div>
+
           <Text style={styles.sectionTitle}>
             From Creative Video to <Text style={styles.greenText}>10,000+ Screen Plays</Text>
           </Text>
@@ -117,7 +121,10 @@ export default function ProcessSection({ onEnquireClick }) {
           <View style={styles.videoCardTop}>
             <View style={styles.videoInfoLeft}>
               <View style={styles.liveBadge}>
-                <View style={styles.livePulsingDot} />
+                <div style={{ position: 'relative', width: 10, height: 10 }}>
+                  <div className="radar-ping" />
+                  <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981', position: 'relative', zIndex: 2 }} />
+                </div>
                 <Text style={styles.liveBadgeText}>ON-ROAD BROADCAST REEL</Text>
               </View>
               <Text style={styles.videoTitleText}>{currentRoute.name}</Text>
@@ -280,10 +287,15 @@ export default function ProcessSection({ onEnquireClick }) {
                       justifyContent: 'center',
                       cursor: 'pointer',
                       boxShadow: '0 2px 10px rgba(250, 204, 21, 0.5)',
+                      transform: 'scale(1)',
+                      transition: 'transform 0.15s ease',
                     }}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                   >
                     {isPlaying ? <Pause size={20} color="#064E3B" /> : <Play size={20} color="#064E3B" />}
                   </button>
+
                   <button
                     onClick={() => setIsMuted(!isMuted)}
                     style={{
@@ -301,7 +313,17 @@ export default function ProcessSection({ onEnquireClick }) {
                     }}
                   >
                     {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                    <span>{isMuted ? 'Muted' : 'Sound Sync Active (85dB)'}</span>
+                    <span>{isMuted ? 'Muted' : 'Sound Sync Active'}</span>
+
+                    {/* Animated Equalizer Bars when Sound is Active */}
+                    {!isMuted && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 3, height: 18, marginLeft: 4 }}>
+                        <div className="eq-bar-1" style={{ width: 3, backgroundColor: '#FACC15', borderRadius: 2 }} />
+                        <div className="eq-bar-2" style={{ width: 3, backgroundColor: '#10B981', borderRadius: 2 }} />
+                        <div className="eq-bar-3" style={{ width: 3, backgroundColor: '#FACC15', borderRadius: 2 }} />
+                        <div className="eq-bar-4" style={{ width: 3, backgroundColor: '#10B981', borderRadius: 2 }} />
+                      </div>
+                    )}
                   </button>
                 </div>
 
@@ -313,6 +335,18 @@ export default function ProcessSection({ onEnquireClick }) {
             </div>
           </View>
         </View>
+
+        {/* Luminous Connecting Progress Conduit Line */}
+        <div
+          className="flow-conduit"
+          style={{
+            height: '4px',
+            width: '100%',
+            borderRadius: '2px',
+            marginBottom: '24px',
+            boxShadow: '0 0 10px rgba(16, 185, 129, 0.5)',
+          }}
+        />
 
         {/* 4 INTERACTIVE STEP CARDS (Video -> Approval -> Payment -> 10,000 Plays) */}
         <View style={styles.stepsGrid}>
@@ -807,7 +841,6 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 20,
-    marginBottom: 14,
   },
   sectionBadgeText: {
     fontSize: 11,
@@ -838,7 +871,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#E2E8F0',
     padding: 24,
-    marginBottom: 40,
+    marginBottom: 32,
     boxShadow: '0 12px 35px rgba(0, 0, 0, 0.05)',
   },
   videoCardTop: {
@@ -855,7 +888,7 @@ const styles = StyleSheet.create({
   liveBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
     backgroundColor: '#ECFDF5',
     alignSelf: 'flex-start',
     paddingVertical: 4,
@@ -863,12 +896,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#A7F3D0',
-  },
-  livePulsingDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#10B981',
   },
   liveBadgeText: {
     fontSize: 11,
