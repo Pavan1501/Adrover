@@ -1,135 +1,105 @@
 // src/App.jsx
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
-import ProcessSection from './components/ProcessSection';
-import PartnerLogosSection from './components/PartnerLogosSection';
-import SecondVideoEnquirySection from './components/SecondVideoEnquirySection';
-import Footer from './components/Footer';
-import EnquiryScreen from './screens/EnquiryScreen';
-import { THEME } from './styles/theme';
-import { MessageSquare, Sparkles } from 'lucide-react';
+import EditorialSidebar from './components/EditorialSidebar';
+import InteractiveFeed from './components/InteractiveFeed';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('home'); // 'home' | 'enquiry'
+  const [activeSection, setActiveSection] = useState('video-reel');
 
-  const handleScrollToSection = (sectionId) => {
-    if (currentView !== 'home') {
-      setCurrentView('home');
-      setTimeout(() => {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    } else {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+  const scrollToSection = (sectionId) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
-  const navigateToEnquiry = () => {
-    setCurrentView('enquiry');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const navigateToHome = () => {
-    setCurrentView('home');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const openEnquiry = () => {
+    scrollToSection('enquiry-planner');
   };
 
   return (
-    <View style={styles.appContainer}>
-      {/* Sticky Navigation */}
-      <Navbar
-        currentView={currentView}
-        setCurrentView={setCurrentView}
-        onScrollToSection={handleScrollToSection}
-      />
-
-      {/* Screen Views */}
-      {currentView === 'home' ? (
-        <View style={styles.contentWrapper}>
-          {/* 1. About & Hero */}
-          <HeroSection
-            onEnquireClick={navigateToEnquiry}
-            onExploreProcess={() => handleScrollToSection('process')}
-            onWatchDemo={() => handleScrollToSection('video')}
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', color: 'var(--fg)' }}>
+      {/* PodPolite-style Split Grid Layout */}
+      <div
+        className="podpolite-grid"
+        style={{
+          display: 'grid',
+          minHeight: '100vh',
+          backgroundColor: '#FFFFFF',
+        }}
+      >
+        {/* Left Column: Persistent Editorial Thesis, Index & Brand Manifest */}
+        <div className="podpolite-left" style={{ position: 'relative' }}>
+          <EditorialSidebar
+            activeSection={activeSection}
+            onSelectSection={scrollToSection}
+            onOpenEnquiry={openEnquiry}
           />
-
-          {/* 2. Process Section: Video, Business Approval, Payment, 10,000 Plays */}
-          <ProcessSection onEnquireClick={navigateToEnquiry} />
-
-          {/* 3. Partner Logos: Continuous Auto-Sliding Horizontal Marquee */}
-          <PartnerLogosSection />
-
-          {/* 4. Second Video & Enquiry Section */}
-          <SecondVideoEnquirySection onNavigateToEnquiry={navigateToEnquiry} />
-
-          {/* 5. Footer */}
-          <Footer
-            onNavigateSection={handleScrollToSection}
-            onNavigateToEnquiry={navigateToEnquiry}
-          />
-        </View>
-      ) : (
-        <View style={styles.contentWrapper}>
-          {/* Dedicated Campaign Enquiry Page */}
-          <EnquiryScreen onBackToHome={navigateToHome} />
-
-          {/* Footer */}
-          <Footer
-            onNavigateSection={handleScrollToSection}
-            onNavigateToEnquiry={navigateToEnquiry}
-          />
-        </View>
-      )}
-
-      {/* Floating Quick Action Button */}
-      {currentView === 'home' && (
-        <div
-          onClick={navigateToEnquiry}
-          style={{
-            position: 'fixed',
-            bottom: '24px',
-            right: '24px',
-            backgroundColor: '#FACC15',
-            border: '2px solid #EAB308',
-            borderRadius: '50px',
-            padding: '12px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            boxShadow: '0 8px 25px rgba(234, 179, 8, 0.45)',
-            cursor: 'pointer',
-            zIndex: 998,
-            fontWeight: 800,
-            fontSize: '14px',
-            color: '#064E3B',
-            transition: 'transform 0.2s ease',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-        >
-          <Sparkles size={16} color="#064E3B" />
-          <span>Instant Enquiry</span>
         </div>
-      )}
-    </View>
+
+        {/* Right Column: Interactive Transit Media Lab & Action Feed */}
+        <div className="podpolite-right" style={{ backgroundColor: '#FFFFFF' }}>
+          <InteractiveFeed
+            activeSection={activeSection}
+            onSectionInView={setActiveSection}
+          />
+        </div>
+      </div>
+
+      {/* Clean Editorial Footer */}
+      <footer
+        style={{
+          borderTop: '1px solid var(--hairline)',
+          backgroundColor: '#FAFAFA',
+          padding: '32px 24px',
+          color: 'var(--muted)',
+          fontSize: '12px',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1440,
+            margin: '0 auto',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '16px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontWeight: 800, color: 'var(--fg)', letterSpacing: '0.04em' }}>ADOVER</span>
+            <span>•</span>
+            <span className="font-mono" style={{ textTransform: 'uppercase', fontSize: '11px' }}>
+              Transit DOOH & Mobile LED Broadcast Network © 2026
+            </span>
+          </div>
+
+          <div className="font-mono" style={{ display: 'flex', gap: '20px', fontSize: '11px', textTransform: 'uppercase' }}>
+            <a href="#video-reel" onClick={() => scrollToSection('video-reel')} style={{ color: 'var(--muted)', textDecoration: 'none' }}>Specs</a>
+            <a href="#process-engine" onClick={() => scrollToSection('process-engine')} style={{ color: 'var(--muted)', textDecoration: 'none' }}>4-Step SLA</a>
+            <a href="#client-marquee" onClick={() => scrollToSection('client-marquee')} style={{ color: 'var(--muted)', textDecoration: 'none' }}>Clients</a>
+            <a href="#enquiry-planner" onClick={openEnquiry} style={{ color: 'var(--action)', fontWeight: 800, textDecoration: 'none' }}>Book Slots ➔</a>
+          </div>
+        </div>
+      </footer>
+
+      {/* Responsive Styles for the Grid */}
+      <style>{`
+        .podpolite-grid {
+          grid-template-columns: minmax(420px, 0.82fr) minmax(500px, 1fr);
+        }
+        @media (max-width: 980px) {
+          .podpolite-grid {
+            grid-template-columns: 1fr;
+          }
+          .podpolite-left {
+            border-right: none !important;
+            border-bottom: 1px solid var(--hairline);
+          }
+        }
+      `}</style>
+    </div>
   );
 }
-
-const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-    backgroundColor: '#FAFAFA',
-    minHeight: '100%',
-  },
-  contentWrapper: {
-    width: '100%',
-  },
-});
-
