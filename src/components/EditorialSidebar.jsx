@@ -14,6 +14,8 @@ import {
   Radio,
   FileText,
   Compass,
+  MessageSquare,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default function EditorialSidebar({ activeSection, onSelectSection, onOpenEnquiry }) {
@@ -27,11 +29,11 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
   }, []);
 
   const navLinks = [
-    { id: 'video-reel', number: '01', label: 'Fleet Video & P3 Specs' },
-    { id: 'process-engine', number: '02', label: '4-Step Campaign Engine' },
-    { id: 'client-marquee', number: '03', label: '150+ Brand Partners' },
-    { id: 'luminosity-lab', number: '04', label: 'Daylight & Street Visibility' },
-    { id: 'enquiry-planner', number: '05', label: 'Route Planning & Enquiry' },
+    { id: 'video-reel', number: '01', label: 'Fleet Reel & P3 Specs', tag: 'Live Screen' },
+    { id: 'process-engine', number: '02', label: '4-Step Campaign Engine', tag: '2h SLA' },
+    { id: 'client-marquee', number: '03', label: '150+ Brand Partners', tag: 'Marquee' },
+    { id: 'luminosity-lab', number: '04', label: 'Daylight & Street Visibility', tag: '6500 Nits' },
+    { id: 'enquiry-planner', number: '05', label: 'Route Planning & Enquiry', tag: 'Instant' },
   ];
 
   return (
@@ -40,44 +42,44 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        padding: 'clamp(28px, 4.5vw, 56px) clamp(28px, 4vw, 56px)',
-        borderRight: '1px solid var(--hairline)',
+        padding: '24px 28px',
         backgroundColor: '#FFFFFF',
         minHeight: '100%',
-        position: 'relative',
+        boxSizing: 'border-box',
       }}
     >
       <div>
         {/* Brand Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '36px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               onSelectSection('video-reel');
             }}
-            style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
           >
             <span
               style={{
-                width: 36,
-                height: 36,
+                width: 34,
+                height: 34,
                 borderRadius: 4,
                 border: '1.5px solid var(--fg)',
                 backgroundColor: '#FACC15',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(9,9,7,0.08)',
+                boxShadow: '0 2px 8px rgba(9,9,7,0.06)',
+                flexShrink: 0,
               }}
             >
-              <Truck size={20} color="#090907" strokeWidth={2.4} />
+              <Truck size={18} color="#090907" strokeWidth={2.4} />
             </span>
             <div>
-              <span style={{ fontSize: '18px', fontWeight: 900, letterSpacing: '0.04em', color: 'var(--fg)', display: 'block', lineHeight: 1.1 }}>
+              <span style={{ fontSize: '17px', fontWeight: 900, letterSpacing: '0.04em', color: 'var(--fg)', display: 'block', lineHeight: 1.1 }}>
                 ADOVER
               </span>
-              <span className="font-mono" style={{ fontSize: '10px', uppercase: true, letterSpacing: '0.06em', color: 'var(--action)', fontWeight: 700 }}>
+              <span className="font-mono" style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--action)', fontWeight: 700 }}>
                 TRANSIT MEDIA STUDY
               </span>
             </div>
@@ -92,11 +94,11 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
               backgroundColor: '#ECFDF5',
               color: '#065F46',
               border: '1px solid #A7F3D0',
-              padding: '4px 10px',
+              padding: '3px 8px',
               borderRadius: '2px',
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
+              gap: 5,
               fontWeight: 700,
             }}
           >
@@ -109,74 +111,76 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
         <div
           className="font-mono"
           style={{
-            fontSize: '11px',
+            fontSize: '10px',
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
             color: 'var(--muted)',
-            marginBottom: '18px',
+            marginBottom: '12px',
             display: 'flex',
+            alignItems: 'center',
             flexWrap: 'wrap',
-            gap: '8px 16px',
+            gap: '6px 12px',
+            paddingBottom: '10px',
+            borderBottom: '1px solid var(--hairline)',
           }}
         >
-          <span>Fleet: Active</span>
+          <span style={{ color: 'var(--action)', fontWeight: 800 }}>● FLEET ACTIVE</span>
           <span>•</span>
-          <span style={{ color: 'var(--action)', fontWeight: 700 }}>10,000+ Daily Plays</span>
+          <span style={{ color: 'var(--fg)', fontWeight: 700 }}>10,000+ DAILY PLAYS</span>
           <span>•</span>
-          <span>6 Metro Corridors</span>
+          <span>6 METRO HUBS</span>
         </div>
 
         {/* Big Editorial Headline */}
         <h1
           style={{
-            fontSize: 'clamp(32px, 3.4vw, 48px)',
+            fontSize: 'clamp(24px, 2.3vw, 32px)',
             fontWeight: 800,
-            lineHeight: 1.15,
-            letterSpacing: '-0.03em',
+            lineHeight: 1.18,
+            letterSpacing: '-0.025em',
             color: 'var(--fg)',
-            marginBottom: '22px',
+            margin: '0 0 12px 0',
           }}
         >
-          Why Urban Commutes Command India's <span style={{ textDecoration: 'underline', textDecorationColor: '#FACC15' }}>Most Unmissable</span> Brand Attention.
+          Why Urban Commutes Command India's <span style={{ textDecoration: 'underline', textDecorationColor: '#FACC15', textUnderlineOffset: '4px' }}>Most Unmissable</span> Brand Attention.
         </h1>
 
         {/* Editorial Body / Manifesto */}
         <p
           style={{
-            fontSize: '16px',
-            lineHeight: 1.65,
+            fontSize: '13.5px',
+            lineHeight: 1.55,
             color: 'rgba(13, 13, 11, 0.78)',
-            marginBottom: '32px',
-            maxWidth: '520px',
+            margin: '0 0 16px 0',
           }}
         >
-          Adover turns daily metropolitan congestion into your brand's biggest stage.
-          Double-sided P3 Ultra-Bright LED screen vans move through high-density urban corridors,
+          Adover transforms prime metropolitan congestion into high-dwell cinematic stages.
+          Dual-sided P3 Ultra-Bright LED screen vans navigate high-density arterial corridors,
           delivering guaranteed, GPS-audited video broadcasts directly at eye-level.
         </p>
 
-        {/* Action Button */}
-        <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '40px' }}>
+        {/* Quick Action Buttons */}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '16px' }}>
           <button
             onClick={onOpenEnquiry}
             style={{
               backgroundColor: '#FACC15',
               border: '1.5px solid #EAB308',
               borderRadius: '2px',
-              padding: '13px 22px',
+              padding: '10px 18px',
               fontWeight: 800,
-              fontSize: '13px',
+              fontSize: '12.5px',
               color: '#090907',
               cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '10px',
-              boxShadow: '0 4px 14px rgba(234, 179, 8, 0.35)',
-              transition: 'all 0.18s ease',
+              gap: '8px',
+              boxShadow: '0 2px 10px rgba(234, 179, 8, 0.3)',
+              transition: 'all 0.15s ease',
             }}
           >
             <span>Request Route Booking</span>
-            <ArrowRight size={15} />
+            <ArrowRight size={14} />
           </button>
 
           <a
@@ -185,23 +189,70 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
               backgroundColor: '#FFFFFF',
               border: '1.5px solid var(--hairline)',
               borderRadius: '2px',
-              padding: '13px 18px',
+              padding: '10px 14px',
               fontWeight: 700,
-              fontSize: '13px',
+              fontSize: '12.5px',
               color: 'var(--fg)',
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px',
+              gap: '6px',
             }}
           >
-            <PhoneCall size={14} color="var(--action)" />
+            <PhoneCall size={13} color="var(--action)" />
             <span>+91 90031 70100</span>
           </a>
         </div>
 
+        {/* Compact Live Telemetry Grid - Tight & informational */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '8px',
+            backgroundColor: '#FAFAFA',
+            padding: '12px',
+            borderRadius: '3px',
+            border: '1px solid var(--hairline)',
+            marginBottom: '18px',
+          }}
+        >
+          <div>
+            <div className="font-mono" style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--muted)', fontWeight: 700 }}>
+              LED DISPLAY SPEC
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: 'var(--fg)', marginTop: '2px' }}>
+              6,500 Nits P3 HD
+            </div>
+          </div>
+          <div>
+            <div className="font-mono" style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--muted)', fontWeight: 700 }}>
+              SLA PERMIT CLEARANCE
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: 'var(--action)', marginTop: '2px' }}>
+              Under 2 Hours
+            </div>
+          </div>
+          <div>
+            <div className="font-mono" style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--muted)', fontWeight: 700 }}>
+              GUARANTEED FREQUENCY
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: 'var(--fg)', marginTop: '2px' }}>
+              10,000+ Plays / Day
+            </div>
+          </div>
+          <div>
+            <div className="font-mono" style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--muted)', fontWeight: 700 }}>
+              SIGNAL INTERSECTION DWELL
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: '#D97706', marginTop: '2px' }}>
+              94% Unmissable
+            </div>
+          </div>
+        </div>
+
         {/* Table of Contents / Section Index (PodPolite Style) */}
-        <div style={{ borderTop: '1px solid var(--hairline)', paddingTop: '28px', marginBottom: '32px' }}>
+        <div style={{ borderTop: '1px solid var(--hairline)', paddingTop: '16px', marginBottom: '16px' }}>
           <div
             className="font-mono"
             style={{
@@ -209,13 +260,17 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               color: 'var(--muted)',
-              marginBottom: '16px',
+              marginBottom: '10px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
-            Index of Study & Capabilities
+            <span>Index of Capabilities</span>
+            <span>5 Sections</span>
           </div>
 
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -228,46 +283,110 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
                   }}
                   style={{
                     display: 'flex',
-                    alignItems: 'baseline',
-                    gap: '12px',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                     textDecoration: 'none',
-                    padding: '6px 0',
-                    borderBottom: isActive ? '1px solid var(--fg)' : '1px solid transparent',
+                    padding: '8px 10px',
+                    borderRadius: '2px',
+                    backgroundColor: isActive ? '#FEF9C3' : 'transparent',
+                    border: isActive ? '1px solid #FACC15' : '1px solid transparent',
                     transition: 'all 0.15s ease',
                   }}
                 >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span
+                      className="font-mono"
+                      style={{
+                        fontSize: '11px',
+                        color: isActive ? 'var(--fg)' : 'var(--muted)',
+                        fontWeight: 800,
+                      }}
+                    >
+                      {link.number}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '13px',
+                        fontWeight: isActive ? 800 : 600,
+                        color: isActive ? 'var(--fg)' : 'rgba(13, 13, 11, 0.78)',
+                      }}
+                    >
+                      {link.label}
+                    </span>
+                  </div>
                   <span
                     className="font-mono"
                     style={{
-                      fontSize: '11px',
+                      fontSize: '9px',
+                      textTransform: 'uppercase',
                       color: isActive ? 'var(--action)' : 'var(--muted)',
                       fontWeight: 700,
+                      backgroundColor: isActive ? '#FFFFFF' : '#FAFAFA',
+                      padding: '2px 6px',
+                      borderRadius: '2px',
+                      border: '1px solid var(--hairline)',
                     }}
                   >
-                    {link.number}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: isActive ? 800 : 600,
-                      color: isActive ? 'var(--fg)' : 'rgba(13, 13, 11, 0.72)',
-                    }}
-                  >
-                    {link.label}
+                    {link.tag}
                   </span>
                 </a>
               );
             })}
           </nav>
         </div>
+
+        {/* WhatsApp & Instant Route Planning Help */}
+        <div
+          style={{
+            backgroundColor: '#ECFDF5',
+            border: '1px solid #A7F3D0',
+            borderRadius: '3px',
+            padding: '12px 14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '10px',
+            marginBottom: '16px',
+          }}
+        >
+          <div>
+            <div style={{ fontSize: '12px', fontWeight: 800, color: '#064E3B' }}>
+              Need Same-Day Fleet Activation?
+            </div>
+            <div className="font-mono" style={{ fontSize: '10px', color: '#047857', marginTop: '2px' }}>
+              Direct Line with Transit Operations Lead
+            </div>
+          </div>
+          <a
+            href="https://wa.me/919003170100?text=Hi%20Adover%2C%20I%20would%20like%20to%20plan%20a%20mobile%20LED%20transit%20campaign."
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              backgroundColor: '#10B981',
+              color: '#FFFFFF',
+              fontWeight: 800,
+              fontSize: '11px',
+              padding: '6px 12px',
+              borderRadius: '2px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              flexShrink: 0,
+            }}
+          >
+            <MessageSquare size={12} />
+            <span>WhatsApp</span>
+          </a>
+        </div>
       </div>
 
-      {/* Sidebar Base Telemetry Note */}
-      <div style={{ borderTop: '1px solid var(--hairline)', paddingTop: '20px' }}>
+      {/* Sidebar Base Telemetry Note - Compact & Flush */}
+      <div style={{ borderTop: '1px solid var(--hairline)', paddingTop: '14px' }}>
         <div
           className="font-mono"
           style={{
-            fontSize: '10px',
+            fontSize: '9.5px',
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
             color: 'var(--muted)',
@@ -276,10 +395,13 @@ export default function EditorialSidebar({ activeSection, onSelectSection, onOpe
             justifyContent: 'space-between',
           }}
         >
-          <span>Audit Status: 100% Compliant</span>
-          <span style={{ color: 'var(--action)', fontWeight: 800 }}>GPS Sync 24 FPS</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <CheckCircle2 size={12} color="var(--action)" />
+            RTO & Municipal Certified
+          </span>
+          <span style={{ color: 'var(--action)', fontWeight: 800 }}>GPS SYNC 24 FPS</span>
         </div>
-        <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '8px', lineHeight: 1.5 }}>
+        <p style={{ fontSize: '11px', color: 'var(--muted)', margin: '6px 0 0 0', lineHeight: 1.45 }}>
           Pre-cleared with Municipal Corporations & RTO Transport Authorities across 6 tier-1 metros.
         </p>
       </div>
