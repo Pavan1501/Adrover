@@ -1,19 +1,18 @@
 // src/components/Navbar.jsx
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { THEME } from '../styles/theme';
-import { Truck, ArrowRight, Menu, X, PhoneCall, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Truck, ArrowRight, Menu, X, PhoneCall, Sparkles, ShieldCheck } from 'lucide-react';
 
 export default function Navbar({ currentView, setCurrentView, onScrollToSection }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     { label: 'About', target: 'about' },
-    { label: 'Campaign Journey', target: 'process' },
+    { label: '4-Step Process', target: 'process' },
     { label: '10,000 Plays', target: 'plays' },
     { label: 'Clients', target: 'clients' },
     { label: 'Live Video', target: 'video' },
-    { label: 'Network Cities', target: 'cities' },
   ];
 
   const handleNavClick = (target) => {
@@ -29,63 +28,158 @@ export default function Navbar({ currentView, setCurrentView, onScrollToSection 
   };
 
   return (
-    <View style={styles.navContainer}>
-      <View style={styles.innerNav}>
+    <header
+      style={{
+        backgroundColor: 'rgba(255, 255, 255, 0.92)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(226, 232, 240, 0.8)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 999,
+        width: '100%',
+        boxShadow: '0 4px 20px -2px rgba(15, 23, 42, 0.04)',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1280,
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '14px 24px',
+        }}
+      >
         {/* Brand Logo */}
-        <TouchableOpacity
-          style={styles.logoContainer}
-          onPress={() => {
+        <div
+          onClick={() => {
             setCurrentView('home');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          activeOpacity={0.8}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            cursor: 'pointer',
+          }}
         >
-          <View style={styles.logoIconWrapper}>
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, #FACC15, #10B981)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 14px rgba(16, 185, 129, 0.25)',
+              position: 'relative',
+            }}
+          >
             <Truck size={22} color="#064E3B" strokeWidth={2.4} />
-            <View style={styles.activePill} />
-          </View>
-          <View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              <Text style={styles.brandTitle}>ADOVER</Text>
-              <View style={styles.tagBadge}>
-                <Text style={styles.tagText}>LED TRANSIT</Text>
-              </View>
-            </View>
-            <Text style={styles.brandSubtitle}>High-Impact Screen Network</Text>
-          </View>
-        </TouchableOpacity>
+            <div
+              style={{
+                position: 'absolute',
+                top: -3,
+                right: -3,
+                width: 10,
+                height: 10,
+                borderRadius: 5,
+                backgroundColor: '#10B981',
+                border: '2px solid #FFFFFF',
+              }}
+            />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  fontSize: 22,
+                  fontWeight: 900,
+                  color: '#0F172A',
+                  letterSpacing: '0.8px',
+                  lineHeight: '24px',
+                }}
+              >
+                ADOVER
+              </span>
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 800,
+                  color: '#065F46',
+                  backgroundColor: '#ECFDF5',
+                  padding: '2px 8px',
+                  borderRadius: 6,
+                  border: '1px solid #A7F3D0',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                DOOH NETWORK
+              </span>
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 600, color: '#64748B' }}>
+              Transit & Mobile LED Advertising
+            </span>
+          </div>
+        </div>
 
         {/* Desktop Navigation Links */}
-        <View style={styles.desktopLinks}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 28,
+          }}
+          className="desktop-nav-links"
+        >
           {navItems.map((item) => (
-            <TouchableOpacity
+            <button
               key={item.target}
-              style={styles.navLink}
-              onPress={() => handleNavClick(item.target)}
-              activeOpacity={0.7}
+              onClick={() => handleNavClick(item.target)}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: 14,
+                fontWeight: 700,
+                color: '#334155',
+                cursor: 'pointer',
+                padding: '6px 2px',
+                position: 'relative',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#059669')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#334155')}
             >
-              <Text style={styles.navLinkText}>{item.label}</Text>
-            </TouchableOpacity>
+              {item.label}
+            </button>
           ))}
-        </View>
+        </div>
 
-        {/* Right CTA Actions */}
-        <View style={styles.navActions}>
-          <TouchableOpacity
-            style={styles.callButton}
-            onPress={() => window.open('tel:+919003170100', '_self')}
-            activeOpacity={0.8}
+        {/* Right Actions */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <a
+            href="tel:+919003170100"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '9px 14px',
+              backgroundColor: '#F8FAFC',
+              borderRadius: 24,
+              border: '1.5px solid #E2E8F0',
+              textDecoration: 'none',
+              fontSize: 12,
+              fontWeight: 800,
+              color: '#065F46',
+            }}
           >
-            <PhoneCall size={16} color={THEME.colors.primaryGreenDark} />
-            <Text style={styles.callButtonText}>+91 90031 70100</Text>
-          </TouchableOpacity>
+            <PhoneCall size={14} color="#059669" />
+            <span>+91 90031 70100</span>
+          </a>
 
-          <TouchableOpacity
-            style={[
-              styles.enquiryCtaBtn,
-              currentView === 'enquiry' && styles.enquiryCtaBtnActive,
-            ]}
-            onPress={() => {
+          <button
+            onClick={() => {
               if (currentView === 'enquiry') {
                 setCurrentView('home');
               } else {
@@ -93,228 +187,27 @@ export default function Navbar({ currentView, setCurrentView, onScrollToSection 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }
             }}
-            activeOpacity={0.85}
-          >
-            <View style={styles.enquiryBtnInner}>
-              <Sparkles size={16} color="#064E3B" />
-              <Text style={styles.enquiryBtnText}>
-                {currentView === 'enquiry' ? 'Back to Home' : 'Campaign Enquiry'}
-              </Text>
-              <ArrowRight size={16} color="#064E3B" />
-            </View>
-          </TouchableOpacity>
-
-          {/* Mobile Hamburger Button */}
-          <TouchableOpacity
-            style={styles.hamburgerBtn}
-            onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
-            activeOpacity={0.8}
-          >
-            {mobileMenuOpen ? (
-              <X size={24} color={THEME.colors.textPrimary} />
-            ) : (
-              <Menu size={24} color={THEME.colors.textPrimary} />
-            )}
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <View style={styles.mobileDropdown}>
-          {navItems.map((item) => (
-            <TouchableOpacity
-              key={item.target}
-              style={styles.mobileNavItem}
-              onPress={() => handleNavClick(item.target)}
-            >
-              <Text style={styles.mobileNavText}>{item.label}</Text>
-            </TouchableOpacity>
-          ))}
-          <TouchableOpacity
-            style={styles.mobileEnquiryBtn}
-            onPress={() => {
-              setMobileMenuOpen(false);
-              setCurrentView('enquiry');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+            style={{
+              background: 'linear-gradient(135deg, #FACC15 0%, #F59E0B 100%)',
+              border: '2px solid #EAB308',
+              borderRadius: 24,
+              padding: '10px 20px',
+              fontWeight: 900,
+              fontSize: 13,
+              color: '#064E3B',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              boxShadow: '0 4px 14px rgba(234, 179, 8, 0.35)',
             }}
           >
-            <Text style={styles.mobileEnquiryBtnText}>Book Campaign Enquiry</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </View>
+            <Sparkles size={15} color="#064E3B" />
+            <span>{currentView === 'enquiry' ? 'Back to Home' : 'Campaign Enquiry'}</span>
+            <ArrowRight size={15} color="#064E3B" />
+          </button>
+        </div>
+      </div>
+    </header>
   );
 }
-
-const styles = StyleSheet.create({
-  navContainer: {
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
-    position: 'sticky',
-    top: 0,
-    zIndex: 999,
-    width: '100%',
-    boxShadow: '0 4px 20px -2px rgba(16, 185, 129, 0.08)',
-  },
-  innerNav: {
-    maxWidth: 1280,
-    width: '100%',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-  },
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  logoIconWrapper: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: THEME.colors.primaryYellow,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: THEME.colors.primaryGreen,
-    position: 'relative',
-    boxShadow: '0 4px 10px rgba(250, 204, 21, 0.4)',
-  },
-  activePill: {
-    position: 'absolute',
-    top: -3,
-    right: -3,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: THEME.colors.primaryGreen,
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-  },
-  brandTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#064E3B',
-    letterSpacing: 1.5,
-  },
-  tagBadge: {
-    backgroundColor: THEME.colors.primaryGreenLight,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: THEME.colors.borderGreen,
-  },
-  tagText: {
-    fontSize: 9,
-    fontWeight: '700',
-    color: THEME.colors.primaryGreenDeep,
-    letterSpacing: 0.5,
-  },
-  brandSubtitle: {
-    fontSize: 11,
-    fontWeight: '500',
-    color: THEME.colors.textMuted,
-  },
-  desktopLinks: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 22,
-    // Hide on very small screens via media query simulation
-  },
-  navLink: {
-    paddingVertical: 6,
-    paddingHorizontal: 4,
-    position: 'relative',
-  },
-  navLinkText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: THEME.colors.textSecondary,
-    transition: 'color 0.2s ease',
-  },
-  navActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  callButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: THEME.colors.primaryGreenSoft,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: THEME.colors.borderGreen,
-  },
-  callButtonText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: THEME.colors.primaryGreenDark,
-  },
-  enquiryCtaBtn: {
-    backgroundColor: THEME.colors.primaryYellow,
-    paddingVertical: 9,
-    paddingHorizontal: 16,
-    borderRadius: 24,
-    borderWidth: 1.5,
-    borderColor: '#EAB308',
-    boxShadow: '0 4px 14px rgba(234, 179, 8, 0.4)',
-  },
-  enquiryCtaBtnActive: {
-    backgroundColor: THEME.colors.primaryGreenLight,
-    borderColor: THEME.colors.primaryGreen,
-  },
-  enquiryBtnInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  enquiryBtnText: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#064E3B',
-    letterSpacing: 0.3,
-  },
-  hamburgerBtn: {
-    padding: 6,
-    display: 'none', // Shown conditionally on mobile via web styling
-  },
-  mobileDropdown: {
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderTopColor: '#F1F5F9',
-    padding: 16,
-    gap: 12,
-  },
-  mobileNavItem: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F8FAFC',
-  },
-  mobileNavText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: THEME.colors.textPrimary,
-  },
-  mobileEnquiryBtn: {
-    backgroundColor: THEME.colors.primaryYellow,
-    paddingVertical: 12,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  mobileEnquiryBtnText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#064E3B',
-  },
-});
-

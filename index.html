@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adover | Next-Gen Mobile LED & Transit Advertising Network</title>
+    <title>Adover | India's #1 Transit DOOH & Mobile LED Advertising Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%2310B981'/><circle cx='50' cy='50' r='32' fill='%23FACC15'/><path d='M40 32 L70 50 L40 68 Z' fill='%23064E3B'/></svg>" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='26' fill='%2310B981'/><circle cx='50' cy='50' r='32' fill='%23FACC15'/><path d='M40 32 L70 50 L40 68 Z' fill='%23064E3B'/></svg>" />
     <style>
-      /* Reset & base styling */
+      /* Clean daylight styling */
       html, body, #root {
         height: 100%;
         margin: 0;
         padding: 0;
-        background-color: #FAFAFA;
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #F8FAFC;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         color: #0F172A;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -24,9 +24,12 @@
       * {
         box-sizing: border-box;
       }
-      /* Custom smooth scrolling and scrollbar */
       html {
         scroll-behavior: smooth;
+      }
+      ::selection {
+        background-color: #A7F3D0;
+        color: #064E3B;
       }
       ::-webkit-scrollbar {
         width: 10px;
@@ -35,30 +38,47 @@
         background: #F1F5F9;
       }
       ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #10B981, #FACC15);
-        border-radius: 6px;
+        background: linear-gradient(180deg, #10B981, #FACC15);
+        border-radius: 8px;
+        border: 2px solid #F1F5F9;
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #059669;
       }
 
-      /* Background Dot Matrix pattern */
-      .bg-dots {
-        background-image: radial-gradient(rgba(16, 185, 129, 0.14) 1.5px, transparent 1.5px);
-        background-size: 24px 24px;
-      }
-      .bg-grid {
+      /* Ambient mesh backdrop */
+      .mesh-bg {
         background-image: 
-          linear-gradient(to right, rgba(234, 179, 8, 0.06) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(16, 185, 129, 0.06) 1px, transparent 1px);
-        background-size: 32px 32px;
+          radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+          radial-gradient(at 100% 0%, rgba(250, 204, 21, 0.1) 0px, transparent 50%),
+          radial-gradient(at 50% 50%, rgba(241, 245, 249, 0.6) 0px, transparent 100%),
+          radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
       }
 
-      /* Animated Glowing Border Beam */
+      .bg-dots {
+        background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1.2px, transparent 1.2px);
+        background-size: 20px 20px;
+      }
+
+      .bg-subtle-grid {
+        background-image: 
+          linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
+      /* Glassmorphism */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+      }
+
+      /* Animated Glowing Border */
       @keyframes borderGlow {
-        0% { filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3)); }
-        50% { filter: drop-shadow(0 0 24px rgba(250, 204, 21, 0.55)); }
-        100% { filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3)); }
+        0%, 100% { filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.25)); }
+        50% { filter: drop-shadow(0 0 24px rgba(250, 204, 21, 0.45)); }
       }
       .glow-pulse {
         animation: borderGlow 4s ease-in-out infinite;
@@ -72,7 +92,7 @@
       .marquee-track {
         display: flex;
         width: 200%;
-        animation: marquee 26s linear infinite;
+        animation: marquee 28s linear infinite;
       }
       .marquee-track:hover {
         animation-play-state: paused;
@@ -87,17 +107,17 @@
         background-image: repeating-linear-gradient(
           to right,
           #FACC15 0,
-          #FACC15 30px,
-          transparent 30px,
-          transparent 60px
+          #FACC15 28px,
+          transparent 28px,
+          transparent 56px
         );
-        background-size: 60px 4px;
+        background-size: 56px 4px;
         background-repeat: repeat-x;
         background-position: bottom 6px center;
         animation: roadMove 0.8s linear infinite;
       }
 
-      /* Rotating Wheels Animation */
+      /* Rotating Wheels */
       @keyframes wheelSpin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
@@ -106,7 +126,7 @@
         animation: wheelSpin 0.7s linear infinite;
       }
 
-      /* Truck Driving Road Rumble/Suspension Physics */
+      /* Suspension Rumble */
       @keyframes roadRumble {
         0% { transform: translateY(0px); }
         25% { transform: translateY(-1.5px) rotate(0.1deg); }
@@ -115,37 +135,26 @@
         100% { transform: translateY(0px); }
       }
       .truck-rumble {
-        animation: roadRumble 1.8s ease-in-out infinite;
+        animation: roadRumble 2s ease-in-out infinite;
       }
 
-      /* Gentle Floating Levitation */
+      /* Floating Levitation */
       @keyframes floatSlow {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-8px); }
+        50% { transform: translateY(-7px); }
         100% { transform: translateY(0px); }
       }
       .float-badge {
-        animation: floatSlow 3.5s ease-in-out infinite;
+        animation: floatSlow 3.6s ease-in-out infinite;
       }
       .float-badge-delayed {
-        animation: floatSlow 4s ease-in-out 1.2s infinite;
+        animation: floatSlow 4.2s ease-in-out 1.2s infinite;
       }
-
-      /* Audio Equalizer Bar Bouncing */
-      @keyframes soundBar {
-        0% { height: 4px; }
-        50% { height: 18px; }
-        100% { height: 4px; }
-      }
-      .eq-bar-1 { animation: soundBar 0.6s ease-in-out infinite; }
-      .eq-bar-2 { animation: soundBar 0.8s ease-in-out 0.15s infinite; }
-      .eq-bar-3 { animation: soundBar 0.5s ease-in-out 0.3s infinite; }
-      .eq-bar-4 { animation: soundBar 0.7s ease-in-out 0.45s infinite; }
 
       /* Laser Scanline Sweep on LED Display */
       @keyframes laserScan {
-        0% { top: -10%; opacity: 0.8; }
-        100% { top: 110%; opacity: 0.3; }
+        0% { top: -10%; opacity: 0.9; }
+        100% { top: 110%; opacity: 0.25; }
       }
       .laser-scan-line {
         position: absolute;
@@ -153,8 +162,8 @@
         right: 0;
         height: 3px;
         background: linear-gradient(90deg, transparent, #FACC15, #10B981, transparent);
-        box-shadow: 0 0 12px #FACC15;
-        animation: laserScan 2.5s ease-in-out infinite;
+        box-shadow: 0 0 14px #FACC15;
+        animation: laserScan 2.4s ease-in-out infinite;
         pointer-events: none;
       }
 
@@ -170,17 +179,6 @@
         border-radius: 50%;
         border: 2px solid #10B981;
         animation: pingRing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-      }
-
-      /* Flowing Conduit Progress Line */
-      @keyframes flowBeam {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 200% 50%; }
-      }
-      .flow-conduit {
-        background: linear-gradient(90deg, #10B981, #FACC15, #10B981, #FACC15);
-        background-size: 200% 100%;
-        animation: flowBeam 3s linear infinite;
       }
 
       /* Shimmer Highlight */
@@ -205,9 +203,9 @@
         content: '';
       }
 
-      /* Interactive Button Micro-Bounce */
+      /* Subtle Button Micro-Interactions */
       button, .interactive-btn {
-        transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease;
+        transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, background-color 0.18s ease;
       }
       button:hover, .interactive-btn:hover {
         transform: translateY(-2px);
