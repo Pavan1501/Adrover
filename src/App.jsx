@@ -1,6 +1,5 @@
 // src/App.jsx
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import ProcessSection from './components/ProcessSection';
@@ -8,20 +7,41 @@ import PartnerLogosSection from './components/PartnerLogosSection';
 import SecondVideoEnquirySection from './components/SecondVideoEnquirySection';
 import Footer from './components/Footer';
 import EnquiryScreen from './screens/EnquiryScreen';
+import PageTransition from './components/PageTransition';
 import { Sparkles, MessageSquare, PhoneCall } from 'lucide-react';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('home'); // 'home' | 'enquiry'
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [targetView, setTargetView] = useState('home');
+
+  const triggerTransitionTo = (nextView) => {
+    if (nextView === currentView) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    setTargetView(nextView);
+    setIsTransitioning(true);
+  };
+
+  const handleTransitionMiddle = () => {
+    setCurrentView(targetView);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleTransitionComplete = () => {
+    setIsTransitioning(false);
+  };
 
   const handleScrollToSection = (sectionId) => {
     if (currentView !== 'home') {
-      setCurrentView('home');
+      triggerTransitionTo('home');
       setTimeout(() => {
         const el = document.getElementById(sectionId);
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 120);
+      }, 700);
     } else {
       const el = document.getElementById(sectionId);
       if (el) {
@@ -31,27 +51,33 @@ export default function App() {
   };
 
   const navigateToEnquiry = () => {
-    setCurrentView('enquiry');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    triggerTransitionTo('enquiry');
   };
 
   const navigateToHome = () => {
-    setCurrentView('home');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    triggerTransitionTo('home');
   };
 
   return (
     <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
+      {/* Awwwards "Art of Documentary" Style Cinematic Preloader & Page Transition Overlay */}
+      <PageTransition
+        isActive={isTransitioning}
+        targetView={targetView}
+        onTransitionMiddle={handleTransitionMiddle}
+        onTransitionComplete={handleTransitionComplete}
+      />
+
       {/* Sticky High-End Glass Navbar */}
       <Navbar
         currentView={currentView}
-        setCurrentView={setCurrentView}
+        setCurrentView={triggerTransitionTo}
         onScrollToSection={handleScrollToSection}
       />
 
       {/* Main Content Flow */}
       {currentView === 'home' ? (
-        <main style={{ width: '100%' }}>
+        <main style={{ width: '100%' }} className="view-reveal-container">
           {/* 1. About & Hero with Live Truck LED Simulator */}
           <HeroSection
             onEnquireClick={navigateToEnquiry}
@@ -75,7 +101,7 @@ export default function App() {
           />
         </main>
       ) : (
-        <main style={{ width: '100%' }}>
+        <main style={{ width: '100%' }} className="view-reveal-container">
           {/* Dedicated High-Converting Route Planning & Campaign Booking Portal */}
           <EnquiryScreen onBackToHome={navigateToHome} />
 
@@ -132,6 +158,23 @@ export default function App() {
           <span>Book Route Slots</span>
         </div>
       )}
+
+      {/* Page Content Cascading Inward Animation */}
+      <style>{`
+        .view-reveal-container {
+          animation: pageContentReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes pageContentReveal {
+          0% {
+            opacity: 0.2;
+            transform: translateY(18px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }
