@@ -42,7 +42,7 @@ export default function SecondVideoEnquirySection({ onNavigateToEnquiry }) {
   const brightnessFactor = (luminosityLevel / 6500) * 0.4 + 0.6; // 0.6 to 1.0
 
   return (
-    <View style={styles.sectionWrapper}>
+    <View style={styles.sectionWrapper} nativeID="visibility">
       <View style={styles.container}>
         {/* Section Header */}
         <View style={styles.headerBlock}>

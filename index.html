@@ -155,6 +155,85 @@
         animation: shimmer 3s infinite;
         content: '';
       }
+
+      /* Floating Badges */
+      @keyframes floatBadge {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+      }
+      .float-badge {
+        animation: floatBadge 3s ease-in-out infinite;
+      }
+      .float-badge-delayed {
+        animation: floatBadge 3.6s ease-in-out infinite 0.8s;
+      }
+
+      /* Truck Suspension Rumble */
+      @keyframes truckRumble {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-2px); }
+      }
+      .truck-rumble {
+        animation: truckRumble 1.4s ease-in-out infinite;
+      }
+
+      /* Glow Pulse */
+      @keyframes glowPulse {
+        0%, 100% { filter: drop-shadow(0 15px 30px rgba(16, 185, 129, 0.18)); }
+        50% { filter: drop-shadow(0 20px 40px rgba(16, 185, 129, 0.32)); }
+      }
+      .glow-pulse {
+        animation: glowPulse 2.8s ease-in-out infinite;
+      }
+
+      /* Laser Scanline Beam */
+      @keyframes laserScan {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(260px); }
+      }
+      .laser-scan-line {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #10B981, #FACC15, transparent);
+        box-shadow: 0 0 12px #10B981;
+        animation: laserScan 2.4s linear infinite;
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      /* Subtle LED Pixel Grid Overlay */
+      .led-pixel-overlay::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0);
+        background-size: 4px 4px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Geometric Backgrounds */
+      .bg-dots {
+        background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+        background-size: 24px 24px;
+      }
+      .bg-grid {
+        background-size: 40px 40px;
+        background-image: linear-gradient(to right, rgba(226, 232, 240, 0.5) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
+      }
+
+      /* Flow Conduit Connector */
+      @keyframes flowLight {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
+      }
+      .flow-conduit {
+        background: linear-gradient(90deg, #10B981, #FACC15, #10B981);
+        background-size: 200% auto;
+        animation: flowLight 2.2s linear infinite;
+      }
     </style>
   </head>
   <body>

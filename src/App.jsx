@@ -1,125 +1,137 @@
 // src/App.jsx
 import React, { useState } from 'react';
-import EditorialSidebar from './components/EditorialSidebar';
-import InteractiveFeed from './components/InteractiveFeed';
+import { View, StyleSheet } from 'react-native';
+import Navbar from './components/Navbar';
+import HeroSection from './components/HeroSection';
+import ProcessSection from './components/ProcessSection';
+import PartnerLogosSection from './components/PartnerLogosSection';
+import SecondVideoEnquirySection from './components/SecondVideoEnquirySection';
+import Footer from './components/Footer';
+import EnquiryScreen from './screens/EnquiryScreen';
+import { Sparkles, MessageSquare, PhoneCall } from 'lucide-react';
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState('video-reel');
+  const [currentView, setCurrentView] = useState('home'); // 'home' | 'enquiry'
 
-  const scrollToSection = (sectionId) => {
-    setActiveSection(sectionId);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handleScrollToSection = (sectionId) => {
+    if (currentView !== 'home') {
+      setCurrentView('home');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 120);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
 
-  const openEnquiry = () => {
-    scrollToSection('enquiry-planner');
+  const navigateToEnquiry = () => {
+    setCurrentView('enquiry');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const navigateToHome = () => {
+    setCurrentView('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', color: 'var(--fg)', width: '100%', overflowX: 'hidden' }}>
-      {/* PodPolite-style Split Grid Layout - Flush Full-Width with Zero Wasted Space */}
-      <div
-        className="podpolite-grid"
-        style={{
-          display: 'grid',
-          minHeight: '100vh',
-          backgroundColor: '#FFFFFF',
-          width: '100%',
-        }}
-      >
-        {/* Left Column: Persistent Editorial Thesis, Index & Brand Manifest (Sticky on desktop) */}
-        <div className="podpolite-left">
-          <EditorialSidebar
-            activeSection={activeSection}
-            onSelectSection={scrollToSection}
-            onOpenEnquiry={openEnquiry}
-          />
-        </div>
+    <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
+      {/* Sticky High-End Glass Navbar */}
+      <Navbar
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        onScrollToSection={handleScrollToSection}
+      />
 
-        {/* Right Column: Interactive Transit Media Lab & Action Feed */}
-        <div className="podpolite-right" style={{ backgroundColor: '#FFFFFF', minWidth: 0, width: '100%' }}>
-          <InteractiveFeed
-            activeSection={activeSection}
-            onSectionInView={setActiveSection}
+      {/* Main Content Flow */}
+      {currentView === 'home' ? (
+        <main style={{ width: '100%' }}>
+          {/* 1. About & Hero with Live Truck LED Simulator */}
+          <HeroSection
+            onEnquireClick={navigateToEnquiry}
+            onExploreProcess={() => handleScrollToSection('process')}
+            onWatchDemo={() => handleScrollToSection('video')}
           />
-        </div>
-      </div>
 
-      {/* Clean Editorial Footer - Tight, compact & informational */}
-      <footer
-        style={{
-          borderTop: '1px solid var(--hairline)',
-          backgroundColor: '#FAFAFA',
-          padding: '18px 24px',
-          color: 'var(--muted)',
-          fontSize: '12px',
-          width: '100%',
-        }}
-      >
+          {/* 2. 4-Step Campaign Execution Engine & Live Rate Calculator */}
+          <ProcessSection onEnquireClick={navigateToEnquiry} />
+
+          {/* 3. 150+ Verified Brand Partners Continuous Auto-Sliding Marquee */}
+          <PartnerLogosSection />
+
+          {/* 4. Street Visibility Lab (2,500-6,500 Nits) & Quick Route Booking */}
+          <SecondVideoEnquirySection onNavigateToEnquiry={navigateToEnquiry} />
+
+          {/* 5. Clean Bright Daylight Footer */}
+          <Footer
+            onNavigateSection={handleScrollToSection}
+            onNavigateToEnquiry={navigateToEnquiry}
+          />
+        </main>
+      ) : (
+        <main style={{ width: '100%' }}>
+          {/* Dedicated High-Converting Route Planning & Campaign Booking Portal */}
+          <EnquiryScreen onBackToHome={navigateToHome} />
+
+          {/* Clean Daylight Footer */}
+          <Footer
+            onNavigateSection={handleScrollToSection}
+            onNavigateToEnquiry={navigateToEnquiry}
+          />
+        </main>
+      )}
+
+      {/* Floating Instant Route Enquiry Pill (Available on Home View) */}
+      {currentView === 'home' && (
         <div
+          onClick={navigateToEnquiry}
           style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            backgroundColor: '#FACC15',
+            border: '2px solid #EAB308',
+            borderRadius: '50px',
+            padding: '12px 22px',
             display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
             alignItems: 'center',
-            gap: '12px',
-            width: '100%',
+            gap: '10px',
+            boxShadow: '0 8px 25px rgba(234, 179, 8, 0.45)',
+            cursor: 'pointer',
+            zIndex: 998,
+            fontWeight: 900,
+            fontSize: '14px',
+            color: '#064E3B',
+            transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-3px) scale(1.04)';
+            e.currentTarget.style.boxShadow = '0 12px 30px rgba(234, 179, 8, 0.6)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(234, 179, 8, 0.45)';
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-            <span style={{ fontWeight: 800, color: 'var(--fg)', letterSpacing: '0.04em' }}>ADOVER</span>
-            <span>•</span>
-            <span className="font-mono" style={{ textTransform: 'uppercase', fontSize: '11px' }}>
-              Transit DOOH & Mobile LED Broadcast Network © 2026
-            </span>
-            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--action)', fontWeight: 700, backgroundColor: '#ECFDF5', padding: '2px 6px', borderRadius: 2 }}>
-              ● ALL FLEET UNITS GPS ACTIVE
-            </span>
-          </div>
-
-          <div className="font-mono" style={{ display: 'flex', gap: '16px', fontSize: '11px', textTransform: 'uppercase', flexWrap: 'wrap' }}>
-            <a href="#video-reel" onClick={() => scrollToSection('video-reel')} style={{ color: 'var(--muted)', textDecoration: 'none' }}>01 Specs</a>
-            <a href="#process-engine" onClick={() => scrollToSection('process-engine')} style={{ color: 'var(--muted)', textDecoration: 'none' }}>02 4-Step SLA</a>
-            <a href="#client-marquee" onClick={() => scrollToSection('client-marquee')} style={{ color: 'var(--muted)', textDecoration: 'none' }}>03 Clients</a>
-            <a href="#luminosity-lab" onClick={() => scrollToSection('luminosity-lab')} style={{ color: 'var(--muted)', textDecoration: 'none' }}>04 Visibility</a>
-            <a href="#enquiry-planner" onClick={openEnquiry} style={{ color: 'var(--action)', fontWeight: 800, textDecoration: 'none' }}>05 Book Slots ➔</a>
-          </div>
+          <div
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: '#059669',
+              boxShadow: '0 0 8px #059669',
+            }}
+          />
+          <Sparkles size={16} color="#064E3B" />
+          <span>Book Route Slots</span>
         </div>
-      </footer>
-
-      {/* Responsive Styles for the Grid - PodPolite Sticky Split Architecture */}
-      <style>{`
-        .podpolite-grid {
-          grid-template-columns: 440px 1fr;
-        }
-        @media (min-width: 1440px) {
-          .podpolite-grid {
-            grid-template-columns: 480px 1fr;
-          }
-        }
-        @media (min-width: 981px) {
-          .podpolite-left {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            border-right: 1px solid var(--hairline);
-          }
-        }
-        @media (max-width: 980px) {
-          .podpolite-grid {
-            grid-template-columns: 1fr;
-          }
-          .podpolite-left {
-            border-right: none !important;
-            border-bottom: 1px solid var(--hairline);
-            height: auto;
-          }
-        }
-      `}</style>
+      )}
     </div>
   );
 }

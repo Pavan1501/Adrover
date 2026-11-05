@@ -12,7 +12,8 @@ export default function Navbar({ currentView, setCurrentView, onScrollToSection 
     { label: '4-Step Process', target: 'process' },
     { label: '10,000 Plays', target: 'plays' },
     { label: 'Clients', target: 'clients' },
-    { label: 'Live Video', target: 'video' },
+    { label: 'Live Reel', target: 'video' },
+    { label: 'Street Visibility', target: 'visibility' },
   ];
 
   const handleNavClick = (target) => {
